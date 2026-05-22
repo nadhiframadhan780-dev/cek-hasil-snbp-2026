@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cek Hasil SNBP 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #060b14;
+      --surface: #0d1524;
+      --surface2: #131e30;
+      --border: #1b2a40;
+      --border2: #243447;
+      --accent: #3b82f6;
+      --accent2: #60a5fa;
+      --green: #10b981;
+      --text: #e8f0fe;
+      --muted: #4d6180;
+      --muted2: #7a95b8;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none; z-index: 0;
+    }
+    .blob { position: fixed; border-radius: 50%; filter: blur(100px); pointer-events: none; z-index: 0; }
+    .blob-blue { width: 600px; height: 600px; background: radial-gradient(#1d4ed8, transparent 70%); top: -200px; left: -200px; opacity: 0.12; }
+    .blob-teal { width: 500px; height: 500px; background: radial-gradient(#0d9488, transparent 70%); bottom: -150px; right: -150px; opacity: 0.09; }
+
+    header { position: relative; z-index: 10; padding: 52px 24px 36px; text-align: center; }
+    .logo-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 22px; }
+    .logo-badge { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, #1d4ed8, #0284c7); display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 4px 16px rgba(29,78,216,0.4); }
+    .logo-text { font-size: 13px; font-weight: 700; color: var(--muted2); letter-spacing: 0.12em; text-transform: uppercase; }
+    h1 { font-size: clamp(2rem, 6vw, 3.8rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.035em; }
+    h1 em { font-style: normal; background: linear-gradient(130deg, #60a5fa 20%, #34d399 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .sub { margin-top: 10px; font-size: 15px; color: var(--muted2); display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: blink 1.8s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .container { position: relative; z-index: 10; max-width: 620px; margin: 0 auto; padding: 0 18px 80px; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 22px; padding: 30px 28px; box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.02) inset; }
+
+    .field { margin-bottom: 18px; }
+    .field-label { font-size: 11.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 7px; display: flex; align-items: center; gap: 6px; }
+    .input-wrap { position: relative; }
+    .i-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+    input { width: 100%; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 11px; padding: 13px 14px 13px 40px; color: var(--text); font-size: 15px; font-family: 'Plus Jakarta Sans', sans-serif; outline: none; transition: border-color .2s, box-shadow .2s; }
+    input[type="text"] { font-family: 'Space Mono', monospace; font-size: 14px; letter-spacing: 0.06em; }
+    input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,.14); }
+    input::placeholder { color: var(--muted); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; letter-spacing: 0; }
+    .field-hint { margin-top: 5px; font-size: 11.5px; color: var(--muted); }
+
+    .btn { width: 100%; margin-top: 6px; background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%); border: none; border-radius: 11px; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 700; padding: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 20px rgba(29,78,216,.45); transition: transform .15s, box-shadow .15s, opacity .15s; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(29,78,216,.55); }
+    .btn:active { transform: translateY(0); }
+    .btn:disabled { opacity: .55; cursor: not-allowed; transform: none !important; }
+    .note { margin-top: 12px; font-size: 11.5px; color: var(--muted); text-align: center; line-height: 1.6; }
+
+    #s-loading, #s-result, #s-error, #s-notfound { display: none; margin-top: 26px; }
+    .loader-box { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 28px 0; color: var(--muted2); font-size: 13px; }
+    .ring { width: 38px; height: 38px; border: 3px solid var(--border2); border-top-color: var(--accent); border-radius: 50%; animation: spin .75s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loader-step { font-size: 12px; color: var(--muted); }
+
+    .nf-box { background: rgba(239,68,68,.06); border: 1px solid rgba(239,68,68,.2); border-radius: 14px; padding: 28px; text-align: center; }
+    .nf-emoji { font-size: 36px; margin-bottom: 10px; }
+    .nf-box h3 { font-size: 16px; font-weight: 700; color: #fca5a5; margin-bottom: 6px; }
+    .nf-box p { font-size: 13px; color: var(--muted2); line-height: 1.6; }
+
+    .err-box { background: rgba(245,158,11,.06); border: 1px solid rgba(245,158,11,.2); border-radius: 14px; padding: 22px; text-align: center; }
+    .err-box h3 { font-size: 15px; font-weight: 700; color: #fcd34d; margin-bottom: 8px; }
+    .err-box p { font-size: 12.5px; color: var(--muted2); line-height: 1.6; }
+
+    .res-wrap { border-radius: 16px; overflow: hidden; border: 1.5px solid rgba(16,185,129,.3); background: linear-gradient(160deg, rgba(16,185,129,.07) 0%, rgba(16,185,129,.02) 100%); }
+    .res-top { padding: 20px 22px; border-bottom: 1px solid rgba(16,185,129,.12); display: flex; align-items: flex-start; gap: 14px; }
+    .res-badge { padding: 3px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+    .res-badge.lulus { background: rgba(16,185,129,.15); color: #34d399; }
+    .res-badge.tidak { background: rgba(239,68,68,.15); color: #f87171; }
+    .res-nama { font-size: 19px; font-weight: 800; margin-top: 5px; color: var(--text); }
+    .res-icon { font-size: 28px; flex-shrink: 0; padding-top: 2px; }
+    .res-body { padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .ibox { background: rgba(255,255,255,.025); border: 1px solid var(--border2); border-radius: 10px; padding: 11px 13px; }
+    .ibox.span2 { grid-column: 1/-1; }
+    .ilabel { font-size: 10.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 3px; }
+    .ival { font-size: 13.5px; font-weight: 600; color: var(--text); line-height: 1.4; }
+    .ival.mono { font-family: 'Space Mono', monospace; font-size: 12.5px; }
+    .sep { height: 1px; background: var(--border); }
+
+    .ptn-box { background: linear-gradient(135deg, rgba(59,130,246,.1), rgba(59,130,246,.04)); border: 1.5px solid rgba(59,130,246,.25); border-radius: 13px; padding: 16px 18px; }
+    .ptn-tag { display: inline-block; background: rgba(59,130,246,.15); color: var(--accent2); font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 10px; border-radius: 999px; margin-bottom: 9px; }
+    .ptn-name { font-size: 17px; font-weight: 800; color: var(--text); }
+    .ptn-prodi { font-size: 13.5px; color: var(--muted2); margin-top: 3px; }
+    .ptn-kode { font-size: 11.5px; color: var(--muted); font-family: 'Space Mono', monospace; margin-top: 3px; }
+    .ptn-link { display: inline-flex; align-items: center; gap: 5px; margin-top: 11px; color: var(--accent2); font-size: 12px; font-weight: 600; text-decoration: none; border: 1px solid rgba(59,130,246,.25); border-radius: 8px; padding: 5px 12px; transition: background .15s; }
+    .ptn-link:hover { background: rgba(59,130,246,.1); }
+
+    .qr-section { display: flex; flex-direction: column; align-items: center; gap: 9px; padding: 8px 0 2px; }
+    .qr-img { width: 120px; height: 120px; border-radius: 10px; background: #fff; padding: 7px; image-rendering: pixelated; }
+    .qr-note { font-size: 11px; color: var(--muted); text-align: center; }
+
+    footer { position: relative; z-index: 10; text-align: center; padding: 0 24px 48px; font-size: 12px; color: var(--muted); line-height: 1.9; }
+    footer a { color: var(--muted2); text-decoration: none; }
+    footer a:hover { color: var(--accent2); }
+
+    @media (max-width: 480px) {
+      .card { padding: 22px 16px; }
+      .grid2 { grid-template-columns: 1fr; }
+      .ibox.span2 { grid-column: 1; }
+      h1 { font-size: 2.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="blob blob-blue"></div>
+  <div class="blob blob-teal"></div>
+
+  <header>
+    <div class="logo-row">
+      <div class="logo-badge">🎓</div>
+      <span class="logo-text">SNPMB · 2026</span>
+    </div>
+    <h1>Cek Hasil<br /><em>SNBP 2026</em></h1>
+    <p class="sub"><span class="live-dot"></span> Data langsung dari server resmi SNPMB</p>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <div class="field">
+        <div class="field-label">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 7h10M7 11h10M7 15h6"/></svg>
+          Nomor Pendaftaran
+        </div>
+        <div class="input-wrap">
+          <svg class="i-icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 8h10M7 12h10M7 16h6"/></svg>
+          <input type="text" id="inp-re" placeholder="Contoh: 426021892" maxlength="20" inputmode="numeric" autocomplete="off" />
+        </div>
+        <div class="field-hint">Nomor pendaftaran SNBP (tertera di akun SNPMB)</div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Tanggal Lahir
+        </div>
+        <div class="input-wrap">
+          <svg class="i-icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <input type="date" id="inp-dob" style="padding-left:40px;" />
+        </div>
+        <div class="field-hint">Sesuai ijazah / akta kelahiran</div>
+      </div>
+
+      <button class="btn" id="btn-cek" onclick="cekHasil()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Cek Hasil SNBP
+      </button>
+      <p class="note">Data diambil langsung dari server resmi SNPMB · Bukan situs resmi SNPMB</p>
+
+      <div id="s-loading">
+        <div class="loader-box">
+          <div class="ring"></div>
+          <span>Mengambil data dari server SNPMB...</span>
+          <span class="loader-step" id="loader-step"></span>
+        </div>
+      </div>
+
+      <div id="s-notfound">
+        <div class="nf-box">
+          <div class="nf-emoji">🔍</div>
+          <h3>Data Tidak Ditemukan</h3>
+          <p>Nomor pendaftaran atau tanggal lahir tidak cocok dengan database SNBP 2026.<br/>Pastikan data yang dimasukkan sudah benar.</p>
+        </div>
+      </div>
+
+      <div id="s-error">
+        <div class="err-box">
+          <h3>⚠️ Gagal Memuat Data</h3>
+          <p id="err-msg">Tidak dapat menghubungi server SNPMB.</p>
+        </div>
+      </div>
+
+      <div id="s-result">
+        <div class="res-wrap" id="res-wrap">
+          <div class="res-top">
+            <div id="r-icon" class="res-icon">🎉</div>
+            <div>
+              <span id="r-badge" class="res-badge lulus">LULUS SNBP 2026</span>
+              <div class="res-nama" id="r-nama">—</div>
+            </div>
+          </div>
+          <div class="res-body">
+            <div class="grid2">
+              <div class="ibox"><div class="ilabel">No. Pendaftaran</div><div class="ival mono" id="r-re">—</div></div>
+              <div class="ibox"><div class="ilabel">NISN</div><div class="ival mono" id="r-ni">—</div></div>
+              <div class="ibox span2"><div class="ilabel">Asal Sekolah</div><div class="ival" id="r-se">—</div></div>
+              <div class="ibox"><div class="ilabel">Kota / Kabupaten</div><div class="ival" id="r-ko">—</div></div>
+              <div class="ibox"><div class="ilabel">Provinsi</div><div class="ival" id="r-pr">—</div></div>
+            </div>
+            <div class="sep"></div>
+            <div id="r-ptn-wrap" class="ptn-box" style="display:none">
+              <span class="ptn-tag">✅ Diterima di</span>
+              <div class="ptn-name" id="r-pt">—</div>
+              <div class="ptn-prodi" id="r-prodi">—</div>
+              <div class="ptn-kode" id="r-kode">—</div>
+              <a id="r-url" href="#" target="_blank" rel="noopener" class="ptn-link" style="display:none">
+                <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                Kunjungi Website PTN
+              </a>
+            </div>
+            <div class="qr-section" id="r-qr-wrap" style="display:none">
+              <img id="r-qr" class="qr-img" src="" alt="QR Bukti Kelulusan" />
+              <div class="qr-note">QR Code Bukti Kelulusan</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Sumber data: <a href="https://pengumuman-snbp.snpmb.id/" target="_blank" rel="noopener">pengumuman-snbp.snpmb.id</a></p>
+    <p>Halaman ini tidak berafiliasi dengan SNPMB / Kemdikbud · Untuk keperluan pribadi</p>
+  </footer>
+
+  <script>
+    const CFG = {
+      base: 'https://pengumuman-snbp.snpmb.id/static/',
+      key:  'CzLibk8y0O',
+    };
+
+    function showState(s) {
+      ['loading','result','error','notfound'].forEach(id => {
+        document.getElementById('s-' + id).style.display = 'none';
+      });
+      if (s) document.getElementById('s-' + s).style.display = 'block';
+    }
+
+    function setStep(msg) {
+      document.getElementById('loader-step').textContent = msg;
+    }
+
+    async function sha256hex(str) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+    }
+
+    async function buildTargetUrl(noReg, dob) {
+      const hash = await sha256hex(noReg + dob + CFG.key);
+      return CFG.base + hash.substring(0, 2) + '/' + hash.substring(2) + '.json';
+    }
+
+    async function cekHasil() {
+      const noReg = document.getElementById('inp-re').value.trim();
+      const dob   = document.getElementById('inp-dob').value;
+
+      if (!noReg) { alert('Masukkan nomor pendaftaran terlebih dahulu.'); return; }
+      if (!dob)   { alert('Masukkan tanggal lahir terlebih dahulu.'); return; }
+
+      const btn = document.getElementById('btn-cek');
+      btn.disabled = true;
+      showState('loading');
+      setStep('Menyiapkan permintaan...');
+
+      try {
+        const dobFmt    = dob.replace(/-/g, '');
+        const targetUrl = await buildTargetUrl(noReg, dobFmt);
+
+        // Panggil Vercel Edge Function /api/fetch sebagai proxy
+        setStep('Menghubungi server SNPMB...');
+        const proxyUrl = '/api/fetch?path=' + encodeURIComponent(targetUrl);
+        const res = await fetch(proxyUrl, { cache: 'no-store' });
+
+        if (res.status === 404) {
+          showState('notfound');
+          return;
+        }
+
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          throw new Error(body.error || `Server error: ${res.status}`);
+        }
+
+        const data = await res.json();
+        if (data.notfound) { showState('notfound'); return; }
+
+        renderResult(data);
+        showState('result');
+
+      } catch (err) {
+        document.getElementById('err-msg').textContent = err.message || 'Terjadi kesalahan tidak terduga.';
+        showState('error');
+      } finally {
+        btn.disabled = false;
+        setStep('');
+      }
+    }
+
+    function renderResult(d) {
+      setText('r-nama', d.na || '—');
+      setText('r-re',   d.re || '—');
+      setText('r-ni',   d.ni || '—');
+      setText('r-se',   d.se || '—');
+      setText('r-ko',   d.ko || '—');
+      setText('r-pr',   d.pr || '—');
+
+      const wrap = document.getElementById('res-wrap');
+
+      if (d.ac) {
+        setText('r-pt',    d.ac.pt || '—');
+        setText('r-prodi', d.ac.pr || '—');
+        setText('r-kode',  'Kode PTN: ' + (d.ac.ku||'') + '  |  Kode Prodi: ' + (d.ac.kp||''));
+        const linkEl = document.getElementById('r-url');
+        if (d.ac.ur) { linkEl.href = d.ac.ur.trim(); linkEl.style.display = 'inline-flex'; }
+        document.getElementById('r-ptn-wrap').style.display = 'block';
+        document.getElementById('r-badge').textContent = 'LULUS SNBP 2026';
+        document.getElementById('r-badge').className   = 'res-badge lulus';
+        document.getElementById('r-icon').textContent  = '🎉';
+        wrap.style.borderColor = 'rgba(16,185,129,.3)';
+        wrap.style.background  = 'linear-gradient(160deg,rgba(16,185,129,.07) 0%,rgba(16,185,129,.02) 100%)';
+      } else {
+        document.getElementById('r-ptn-wrap').style.display = 'none';
+        document.getElementById('r-badge').textContent = 'TIDAK LULUS SNBP 2026';
+        document.getElementById('r-badge').className   = 'res-badge tidak';
+        document.getElementById('r-icon').textContent  = '😔';
+        wrap.style.borderColor = 'rgba(239,68,68,.3)';
+        wrap.style.background  = 'linear-gradient(160deg,rgba(239,68,68,.07) 0%,rgba(239,68,68,.02) 100%)';
+      }
+
+      if (d.qr) {
+        document.getElementById('r-qr').src = 'data:image/png;base64,' + d.qr;
+        document.getElementById('r-qr-wrap').style.display = 'flex';
+      } else {
+        document.getElementById('r-qr-wrap').style.display = 'none';
+      }
+    }
+
+    function setText(id, val) { document.getElementById(id).textContent = val; }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') cekHasil(); });
+  </script>
+</body>
+</html>
